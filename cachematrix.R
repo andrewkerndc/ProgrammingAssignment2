@@ -1,15 +1,35 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This set of functions is intended to provide a means to
+## calculate the inverse of a matrix from cache
 
-## Write a short comment describing this function
-
+##The makeCacheMatrix function is used to provide a list
+## of actions for setting/getting the initial matrix
+## and setting/getting the inverse
 makeCacheMatrix <- function(x = matrix()) {
-
+  m <- NULL
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  get <- function() x
+  setinverse <- function(solve) m <<- solve
+  getinverse <- function() m
+  list(set = set, get = get,
+       setinverse = setinverse,
+       getinverse = getinverse)
 }
 
 
-## Write a short comment describing this function
+## The cacheSolve function calculates the inverse of the
+## matrix created within the above function
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        m <-x$getinverse()
+        if(!is.null(m)) {
+          message("getting matrix inverse")
+          return(m)
+        }
+        data <- x$get()
+        m <- solve(data, ...)
+        x$setinverse(m)
+        m
 }
